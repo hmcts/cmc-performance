@@ -69,17 +69,17 @@ class CMCSimulation extends Simulation {
         .exec(CMC_Defendant.ClaimSummary)*/
         .exec (CMC_Claimant.cmcLogout)
     }
-  val CMC_Defendant=scenario("CMC Defendants")
+  /*val CMC_Defendant=scenario("CMC Defendants")
     .feed(defendantdetailsFeed)
     .exec(CMC_Defendant.landingPage)
       .exec(CMC_Defendant.startPage)
       .exec(CMC_Defendant.claimNumber)
       //.exec(CMC_Defendant.enterpinGet)
       .exec(CMC_Defendant.enterpinPost)
-      .exec(CMC_Defendant.ClaimSummary)
+      .exec(CMC_Defendant.ClaimSummary)*/
    
   
    setUp(
-     CMC_Defendant.inject(nothingFor(1),rampUsers(4000) during (7200))
+     CMCClaimsTS.inject(nothingFor(1),rampUsers(4000) during (7200))
   ).protocols(httpProtocol)
 }
