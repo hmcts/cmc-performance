@@ -1,7 +1,5 @@
-package uk.gov.hmcts.reform.sscs.performance.scenarios.utils
+package uk.gov.hmcts.reform.cmc.performance.scenarios.utils
 
-import io.gatling.core.Predef._
-import io.gatling.http.Predef._
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
