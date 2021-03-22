@@ -19,8 +19,8 @@ object Common {
   
   def randomRepeatInteger() : Integer=
   {
-    //val list=List(300, 280, 260, 250, 240, 200,220,350)
-    val list=List(2,3)
+    val list=List(300, 280, 260, 250, 240, 200,220,350)
+    //val list=List(2,3)
     val start = 200
     val end   = 300
     val rnd = new scala.util.Random
