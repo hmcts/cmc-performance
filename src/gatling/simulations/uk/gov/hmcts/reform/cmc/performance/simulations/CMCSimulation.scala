@@ -3,7 +3,7 @@ package uk.gov.hmcts.reform.cmc.performance.simulations
 import io.gatling.core.Predef.{feed, _}
 import io.gatling.core.scenario.Simulation
 import uk.gov.hmcts.reform.cmc.performance.scenarios.utils.{Common, EmailNotification, Environment}
-import uk.gov.hmcts.reform.cmc.performance.scenarios.{CMC_Claimant, CMC_Claimant_TestingSupport, CreateUser}
+import uk.gov.hmcts.reform.cmc.performance.scenarios.{CMC_Claimant, CMC_Claimant_TestingSupport, CMC_Defendant,CreateUser}
 
 
 class CMCSimulation extends Simulation {
@@ -69,16 +69,17 @@ class CMCSimulation extends Simulation {
         .exec(CMC_Defendant.ClaimSummary)*/
         .exec (CMC_Claimant.cmcLogout)
     }
-  /*val CMC_Defendant=scenario("CMC Defendants")
+  val CMC_Defendant=scenario("CMC Defendants")
     .feed(defendantdetailsFeed)
     .exec(CMC_Defendant.landingPage)
       .exec(CMC_Defendant.startPage)
       .exec(CMC_Defendant.claimNumber)
       //.exec(CMC_Defendant.enterpinGet)
       .exec(CMC_Defendant.enterpinPost)
-      .exec(CMC_Defendant.ClaimSummary)*/
+      .exec(CMC_Defendant.ClaimSummary)
+   
   
    setUp(
-     CMCClaimsTS.inject(nothingFor(1),rampUsers(3000) during (5400))
+     CMC_Defendant.inject(nothingFor(1),rampUsers(4000) during (7200))
   ).protocols(httpProtocol)
 }
