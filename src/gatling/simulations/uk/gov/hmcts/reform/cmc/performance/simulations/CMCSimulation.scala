@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.cmc.performance.simulations
 
 import io.gatling.core.Predef.{feed, _}
 import io.gatling.core.scenario.Simulation
-import uk.gov.hmcts.reform.cmc.performance.scenarios.utils.{EmailNotification, Environment}
+import uk.gov.hmcts.reform.cmc.performance.scenarios.utils.{Common, EmailNotification, Environment}
 import uk.gov.hmcts.reform.cmc.performance.scenarios.{CMC_Claimant, CMC_Claimant_TestingSupport, CreateUser}
 
 
@@ -26,7 +26,13 @@ class CMCSimulation extends Simulation {
   
   val CMCClaimsTS = scenario("CMC Claims Testing Support")
     .feed(defendantloginFeeder)
-    .repeat(2) {
+    .exec
+  {
+    session =>
+      session
+        .set("repeatValue",+ Common.randomRepeatInteger())
+  }
+    .repeat("${repeatValue}") {
       feed(loginFeeder)
         .exec(CMC_Claimant_TestingSupport.home)
         .exec(CMC_Claimant_TestingSupport.login)
@@ -49,7 +55,7 @@ class CMCSimulation extends Simulation {
   
   val CMCClaims = scenario("CMC Claims")
     .feed(defendantloginFeeder)
-    .repeat(3) {
+    .repeat(300) {
       feed(loginFeeder)
         .exec(CMC_Claimant.home)
         .exec(CMC_Claimant.login)
@@ -79,6 +85,6 @@ class CMCSimulation extends Simulation {
         .exec(CMC_Defendant.loginAsDefendant)*/
   
    setUp(
-     CMCClaimsTS.inject(nothingFor(5),rampUsers(3) during (10))
+     CMCClaimsTS.inject(nothingFor(5),rampUsers(5) during (3600))
   ).protocols(httpProtocol)
 }

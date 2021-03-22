@@ -16,6 +16,25 @@ object Common {
   def randomString(length: Int) = {
     rnd.alphanumeric.filter(_.isLetter).take(length).mkString
   }
+  
+  def randomRepeatInteger() : Integer=
+  {
+    //val list=List(300, 280, 260, 250, 240, 200,220,350)
+    val list=List(2,3)
+    val start = 200
+    val end   = 300
+    val rnd = new scala.util.Random
+    list(rnd.nextInt(list.length))
+  }
+  
+  import scala.util.Random
+  object MyClass {
+    def main(args: Array[String]) {
+      val list = List(12, 65, 89, 41, 99, 102)
+      val random = new Random
+      println("Random value of the list " + list(random.nextInt(list.length)))
+    }
+  }
 
 
  def getDay(): String = {
