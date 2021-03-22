@@ -11,6 +11,7 @@ class CMCSimulation extends Simulation {
   val BaseURL = Environment.baseURL
   val loginFeeder = csv("login.csv").circular
   val defendantloginFeeder = csv("defendantlogin.csv").circular
+  val defendantdetailsFeed=csv("defendantdetails.csv").circular
   val httpProtocol = Environment.HttpProtocol
     .baseUrl(BaseURL)
     .doNotTrackHeader("1")
@@ -25,16 +26,9 @@ class CMCSimulation extends Simulation {
     )
   
   val CMCClaimsTS = scenario("CMC Claims Testing Support")
-    .feed(defendantloginFeeder)
-    .exec
-  {
-    session =>
-      session
-        .set("repeatValue",+ Common.randomRepeatInteger())
-  }
-    .repeat("${repeatValue}") {
-      feed(loginFeeder)
-        .exec(CMC_Claimant_TestingSupport.home)
+    .feed(defendantloginFeeder).feed(loginFeeder)
+    .repeat(2) {
+          exec(CMC_Claimant_TestingSupport.home)
         .exec(CMC_Claimant_TestingSupport.login)
         .exec(CMC_Claimant_TestingSupport.testingSupport)
         .exec(CMC_Claimant_TestingSupport.testingSupportdraftget)
@@ -54,37 +48,37 @@ class CMCSimulation extends Simulation {
     }
   
   val CMCClaims = scenario("CMC Claims")
-    .feed(defendantloginFeeder)
-    .repeat(300) {
-      feed(loginFeeder)
-        .exec(CMC_Claimant.home)
-        .exec(CMC_Claimant.login)
-        .exec(CMC_Claimant.eligibility)
-        .exec(CMC_Claimant.resolvingDispute)
-        .exec(CMC_Claimant.completingClaim)
-        .exec(CMC_Claimant.yourDetails)
-        .exec(CMC_Claimant.TheirDetails)
-        .exec(CMC_Claimant.amount)
-        .exec(CMC_Claimant.reason)
-        .exec(CMC_Claimant.checkAndSend)
-        .exec(EmailNotification.getPin)
-        /*.exec(CMC_Defendant.startPage)
+    .feed(defendantloginFeeder).feed (loginFeeder)
+    .repeat(2) {
+        exec (CMC_Claimant.home)
+        .exec (CMC_Claimant.login)
+        .exec (CMC_Claimant.eligibility)
+        .exec (CMC_Claimant.resolvingDispute)
+        .exec (CMC_Claimant.completingClaim)
+        .exec (CMC_Claimant.yourDetails)
+        .exec (CMC_Claimant.TheirDetails)
+        .exec (CMC_Claimant.amount)
+        .exec (CMC_Claimant.reason)
+        .exec (CMC_Claimant.checkAndSend)
+        .exec (EmailNotification.getPin)
+        //.exec(CMC_Defendant.landingPage)
+       /* .exec(CMC_Defendant.startPage)
         .exec(CMC_Defendant.claimNumber)
         //.exec(CMC_Defendant.enterpinGet)
         .exec(CMC_Defendant.enterpinPost)
         .exec(CMC_Defendant.ClaimSummary)*/
-        .exec(CMC_Claimant.cmcLogout)
+        .exec (CMC_Claimant.cmcLogout)
     }
   /*val CMC_Defendant=scenario("CMC Defendants")
-    .exec(CMC_Defendant.)
+    .feed(defendantdetailsFeed)
+    .exec(CMC_Defendant.landingPage)
       .exec(CMC_Defendant.startPage)
       .exec(CMC_Defendant.claimNumber)
-      .exec(CMC_Defendant.enterCode
-      .exec(CMC_Defendant.ClaimSummary
-      .exec(CMC_Defendant.receiver_get
-        .exec(CMC_Defendant.loginAsDefendant)*/
+      //.exec(CMC_Defendant.enterpinGet)
+      .exec(CMC_Defendant.enterpinPost)
+      .exec(CMC_Defendant.ClaimSummary)*/
   
    setUp(
-     CMCClaimsTS.inject(nothingFor(5),rampUsers(5) during (3600))
+     CMCClaimsTS.inject(nothingFor(1),rampUsers(3000) during (5400))
   ).protocols(httpProtocol)
 }
