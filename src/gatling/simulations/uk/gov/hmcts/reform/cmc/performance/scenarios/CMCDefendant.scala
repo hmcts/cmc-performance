@@ -8,7 +8,7 @@ import uk.gov.hmcts.reform.cmc.performance.scenarios.utils.{CsrfCheck, CurrentPa
 
 import scala.concurrent.duration._
 
-object CMC_Defendant {
+object CMCDefendant {
   
   val BaseURL = Environment.baseURL
   val IdAMURL = Environment.idamURL
@@ -44,7 +44,7 @@ object CMC_Defendant {
   val claimNumber =
     group("TX03_CMC_Def_Login_ClaimNumber") {
       exec (http ("TX02_CMC_Def_Login_ClaimNumber")
-        .post (currentPageTemplate)
+        .post ("/first-contact/claim-reference")
         .formParam (csrfParameter, csrfTemplate)
         .formParam ("reference", "${claimno}")
         .check(css("input[name='redirect_uri']", "value").saveAs("redirectUri"))
@@ -58,15 +58,15 @@ object CMC_Defendant {
       .pause(MinThinkTime seconds,MaxThinkTime seconds)
    
   
-  /*val enterpinGet =
-    group("TX04_CMC_Def_PinGet") {
+  val enterpinGet =
+    group("TX05_CMC_Def_PinGet") {
       exec (http ("TX01_CMC_Def_LandingPage_Get")
         .get (currentPageTemplate)
         .check (CsrfCheck.save)
         .check (CurrentPageCheck.save)
           .check(status.in(200,201)))
         
-    }*/
+    }
       //  .pause(MinThinkTime seconds,MaxThinkTime seconds)
      /* val enterpinGet=
         group("TX05_CMC_Def_PinPost"){
@@ -85,15 +85,15 @@ object CMC_Defendant {
       .pause(MinThinkTime seconds,MaxThinkTime seconds)*/
   
   val enterpinPost=
-    group("TX05_CMC_Def_PinPost"){
-      exec (http ("TX03_CMC_Def_Pin")
-        .post (IdAMURL+"/loginWithPin")
+    group("TX06_CMC_Def_PinPost"){
+      exec (http ("TX06_CMC_Def_PinPost")
+        .post (currentPageTemplate)
         .headers(Environment.headers_withpin)
         .formParam (csrfParameter, csrfTemplate)
-        .formParam ("pinnumber", "${pin}")
-        .formParam ("redirect_uri", "${redirectUri}")
-        .formParam ("client_id", "${clientId}")
-        .formParam ("state", "${state}")
+        .formParam ("pinnumber","FNKEX3ME")
+        .formParam ("redirect_uri","${redirectUri}")
+        .formParam ("client_id","${clientId}")
+        .formParam ("state","021MC984")
         .check (CurrentPageCheck.save)
         .check (CsrfCheck.save)
         .check (regex ("Claim details"))
