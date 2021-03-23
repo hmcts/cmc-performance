@@ -67,33 +67,18 @@ object CMCDefendant {
           .check(status.in(200,201)))
         
     }
-      //  .pause(MinThinkTime seconds,MaxThinkTime seconds)
-     /* val enterpinGet=
-        group("TX05_CMC_Def_PinPost"){
-        exec (http ("TX03_CMC_Def_Pin")
-        .post (currentPageTemplate)
-          .headers(Environment.headers_withpin)
-        .formParam (csrfParameter, csrfTemplate)
-        .formParam ("pinnumber", "${securitycode}")
-        .formParam ("redirect_uri", "${redirectUri}")
-        .formParam ("client_id", "${clientId}")
-        .formParam ("state", "${state}")
-        .check (CurrentPageCheck.save)
-        .check (CsrfCheck.save)
-      )
-    }
-      .pause(MinThinkTime seconds,MaxThinkTime seconds)*/
+    
   
   val enterpinPost=
     group("TX06_CMC_Def_PinPost"){
       exec (http ("TX06_CMC_Def_PinPost")
-        .post (currentPageTemplate)
+        .post (IdAMURL+"/loginWithPin")
         .headers(Environment.headers_withpin)
         .formParam (csrfParameter, csrfTemplate)
-        .formParam ("pinnumber","FNKEX3ME")
+        .formParam ("pinnumber","${pin}")
         .formParam ("redirect_uri","${redirectUri}")
         .formParam ("client_id","${clientId}")
-        .formParam ("state","021MC984")
+        .formParam ("state","${state}")
         .check (CurrentPageCheck.save)
         .check (CsrfCheck.save)
         .check (regex ("Claim details"))

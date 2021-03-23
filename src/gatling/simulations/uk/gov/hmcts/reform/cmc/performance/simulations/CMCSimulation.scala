@@ -75,7 +75,7 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.landingPage)
     .exec(CMCDefendant.startPage)
     .exec(CMCDefendant.claimNumber)
-      .exec(CMCDefendant.enterpinGet)
+    .exec(CMCDefendant.enterpinGet)
     .exec(CMCDefendant.enterpinPost)
     .exec(CMCDefendant.ClaimSummary)
   
