@@ -16,6 +16,10 @@ class CMCSimulation extends Simulation {
     //.doNotTrackHeader("1")
     //.inferHtmlResources()
     //.silentResources
+    .acceptHeader("*/*")
+    .acceptEncodingHeader("gzip, deflate")
+    .acceptLanguageHeader("en-GB,en;q=0.5")
+    .userAgentHeader("Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:86.0) Gecko/20100101 Firefox/86.0")
   
   
   // below scenario is for user data creation
@@ -75,11 +79,12 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.landingPage)
     .exec(CMCDefendant.startPage)
     .exec(CMCDefendant.claimNumber)
-    .exec(CMCDefendant.enterpinGet)
     .exec(CMCDefendant.enterpinPost)
     .exec(CMCDefendant.ClaimSummary)
+    .exec(CMCDefendant.loginAsDefendantGet)
+    .exec(CMCDefendant.loginAsDefendant)
   
   setUp(
-    CMC_Defendant.inject(nothingFor(1),rampUsers(1) during (1))
+    CMC_Defendant.inject(nothingFor(1),rampUsers(3500) during (7200))
   ).protocols(httpProtocol)
 }

@@ -11,6 +11,7 @@ import scala.concurrent.duration._
 object CMCDefendant {
   
   val BaseURL = Environment.baseURL
+  val baseDomain=Environment.baseDomain
   val IdAMURL = Environment.idamURL
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
@@ -20,18 +21,21 @@ object CMCDefendant {
   
   
   val landingPage =
-    group("TX01_CMC_Def_LandingPage_Get") {
-      exec (http ("TX01_CMC_Def_LandingPage_Get")
+    group("CMCDef_010_LandingPage_Get") {
+      exec(flushHttpCache).exec(flushSessionCookies).exec(flushCookieJar)
+        .exec (http ("LandingPage_Get")
         .get ("/first-contact/start")
+          .headers(Environment.headers_firstcontact)
         .check (CsrfCheck.save)
         .check (regex ("Start now")))
     }
     .pause(MinThinkTime seconds,MaxThinkTime seconds)
   
   val startPage=
-    group("TX02_CMC_Def_LandingPage_Post") {
-      exec (http ("TX01_CMC_Def_LandingPage_Post")
+    group("CMCDef_020_LandingPage_Post") {
+      exec (http ("LandingPage_Post")
         .post ("/first-contact/start")
+          .headers(Environment.headers_25)
         .formParam (csrfParameter, csrfTemplate)
         .formParam ("start-button", "Start now")
         .check (CurrentPageCheck.save)
@@ -42,9 +46,10 @@ object CMCDefendant {
     .pause(MinThinkTime seconds,MaxThinkTime seconds)
   
   val claimNumber =
-    group("TX03_CMC_Def_Login_ClaimNumber") {
-      exec (http ("TX02_CMC_Def_Login_ClaimNumber")
-        .post ("/first-contact/claim-reference")
+    group("CMCDef_030_ClaimNumber") {
+      exec (http ("ClaimNumber")
+        .post (currentPageTemplate)
+        .headers(Environment.headers_25)
         .formParam (csrfParameter, csrfTemplate)
         .formParam ("reference", "${claimno}")
         .check(css("input[name='redirect_uri']", "value").saveAs("redirectUri"))
@@ -56,26 +61,15 @@ object CMCDefendant {
       )
     }
       .pause(MinThinkTime seconds,MaxThinkTime seconds)
-   
-  
-  val enterpinGet =
-    group("TX05_CMC_Def_PinGet") {
-      exec (http ("TX01_CMC_Def_LandingPage_Get")
-        .get (currentPageTemplate)
-        .check (CsrfCheck.save)
-        .check (CurrentPageCheck.save)
-          .check(status.in(200,201)))
-        
-    }
-    
   
   val enterpinPost=
-    group("TX06_CMC_Def_PinPost"){
-      exec (http ("TX06_CMC_Def_PinPost")
+    group("CMCDef_040_PinPost"){
+      exec (http ("Def_PinPost")
         .post (IdAMURL+"/loginWithPin")
+       // .post (currentPageTemplate)
         .headers(Environment.headers_withpin)
         .formParam (csrfParameter, csrfTemplate)
-        .formParam ("pinnumber","${pin}")
+        .formParam ("pin","${pin}")
         .formParam ("redirect_uri","${redirectUri}")
         .formParam ("client_id","${clientId}")
         .formParam ("state","${state}")
@@ -86,40 +80,48 @@ object CMCDefendant {
     }
       .pause(MinThinkTime seconds,MaxThinkTime seconds)
   
+  
   val ClaimSummary =
-    group("TX06_CMC_Def_FirstContact_ClaimSummary") {
-      exec (http ("TX04_CMC_Def_FirstContact_ClaimSummary")
+    group("CMCDef_050_ClaimSummary") {
+      exec (http ("ClaimSummary")
         .post (currentPageTemplate)
-          .headers(Environment.headers_claimsummary)
+          .headers(Environment.headers_25)
         .formParam (csrfParameter, csrfTemplate)
         .check (CurrentPageCheck.save)
        // .check (CsrfCheck.save)
         .check (regex ("Create an account or sign in"))
       )
     }
-      .pause(MinThinkTime seconds,MaxThinkTime seconds)
-    
-  val receiver_get =
-    group("TX05_CMC_Def_Login_Receiver_Get") {
-      exec (http ("TX05_CMC_Def_Login_Receiver_Get")
-        .get (currentPageTemplate)
-        .check (CurrentPageCheck.save)
-        .check (CsrfCheck.save)
-        .check (regex ("Sign in"))
-      )
-    }
+      
       .pause(MinThinkTime seconds,MaxThinkTime seconds)
   
-  val loginAsDefendant=
-    group("TX06_CMC_Def_Login_As_Defendant") {
-      exec (http ("TX06_CMC_Def_Login_As_Defendant")
-        .post (currentPageTemplate)
-        .formParam (csrfParameter, csrfTemplate)
-        .formParam ("username", "cmcvv300@mailinator.com")
-        .formParam ("password", "Pass19word")
+  val loginAsDefendantGet =
+    group("CMCDef_060_Login_As_DefendantGet") {
+      exec (http ("Login_As_DefendantGet")
+        .get (currentPageTemplate)
+          .check(status.in(201,200,204))
+        .check(regex("response_type=code&state=(.*)&client_id").saveAs("state"))
+        .check(regex("&redirect_uri=(.*)&jwt=").saveAs("redirectURI"))
+        .check(regex("&client_id=(.*)&redirect_uri").saveAs("clientId"))
+        .check(regex("&scope=&jwt=(.*)\">Sign in to your account").saveAs("jwttoken"))
         .check (CurrentPageCheck.save)
         .check (CsrfCheck.save))
-        .pause (MinThinkTime seconds, MaxThinkTime seconds)
     }
+      .pause (MinThinkTime seconds, MaxThinkTime seconds)
+  
+  val loginAsDefendant=
+    group("CMCDef_070_Login_As_Defendant") {
+        exec (http ("Login_As_Defendant")
+        .post(IdAMURL+"/register?redirect_uri=${redirectURI}&client_id=${clientId}&state=${state}&scope=&jwt=${jwttoken}")
+        .formParam (csrfParameter, csrfTemplate)
+        .formParam ("username", "${defuser}")
+        .formParam ("password", "Pa55word11")
+        .check(status.in(200,201,204))
+        .check (regex (" Claims made against you"))
+      )
+        //.check (CurrentPageCheck.save)
+        //.check (CsrfCheck.save))
+    }
+      .pause (MinThinkTime seconds, MaxThinkTime seconds)
     
 }
