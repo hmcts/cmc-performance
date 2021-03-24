@@ -29,6 +29,8 @@ class CMCSimulation extends Simulation {
         .pause(20)
     )
   
+  //below scenario is to generate claims data
+  
   val CMCClaimsTS = scenario("CMC Claims Testing Support")
     .feed(defendantloginFeeder).feed(loginFeeder)
     .repeat(2) {
@@ -43,11 +45,11 @@ class CMCSimulation extends Simulation {
         .exec(CMC_Claimant_TestingSupport.testingsupportdefmobilepost)
         .exec(CMC_Claimant_TestingSupport.checkAndSend)
         .exec(EmailNotification.getPin)
-        .exec(CMCDefendant.startPage)
+        /*.exec(CMCDefendant.startPage)
         .exec(CMCDefendant.claimNumber)
         // .exec(CMC_Defendant.enterpinGet)
         .exec(CMCDefendant.enterpinPost)
-        .exec(CMCDefendant.ClaimSummary)
+        .exec(CMCDefendant.ClaimSummary)*/
         .exec(CMC_Claimant.cmcLogout)
     }
   
@@ -74,6 +76,8 @@ class CMCSimulation extends Simulation {
         .exec (CMC_Claimant.cmcLogout)
     }
   
+  //below scenario is to link the claims to defendants for datagen
+  
   val CMC_Defendant=scenario("CMC Defendants")
     .feed(defendantdetailsFeed)
     .exec(CMCDefendant.landingPage)
@@ -84,7 +88,35 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.loginAsDefendantGet)
     .exec(CMCDefendant.loginAsDefendant)
   
+  //below scenario is for OCMC testing the dashboard with defendants having more claims
+  val CMC_Defendant_Response=scenario("CMC Defendants Response")
+    .feed(defendantloginFeeder)
+    .exec(CMCDefendant.dashboard)
+    .exec(CMCDefendant.defendantlogin)
+    .exec(CMCDefendant.casetaskList)
+    .exec(CMCDefendant.defendantDetails)
+    .exec(CMCDefendant.dob)
+    .exec(CMCDefendant.mobile)
+    .exec(CMCDefendant.moreTimeRequest)
+    .exec(CMCDefendant.responseType)
+    .exec(CMCDefendant.reject_All_Claims)
+    .exec(CMCDefendant.yourDefence)
+    .exec(CMCDefendant.timeLine)
+    .exec(CMCDefendant.evidence)
+    .exec(CMCDefendant.freeMediation)
+    .exec(CMCDefendant.freeMediationDecision)
+    .exec(CMCDefendant.freeMediationAgreement)
+    .exec(CMCDefendant.mediationusage)
+    .exec(CMCDefendant.supportrequired)
+    .exec(CMCDefendant.hearinglocation)
+    .exec(CMCDefendant.selfwitness)
+    .exec(CMCDefendant.otherwitness)
+    .exec(CMCDefendant.hearingdates)
+    .exec(CMCDefendant.checkAndSend)
+    .exec(CMCDefendant.cmcdefLogout)
+  
+  
   setUp(
-    CMC_Defendant.inject(nothingFor(1),rampUsers(3485) during (7200))
+    CMCClaimsTS.inject(nothingFor(1),rampUsers(2000) during (5400))
   ).protocols(httpProtocol)
 }
