@@ -114,8 +114,7 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.hearingdates)
     .exec(CMCDefendant.checkAndSend)
     .exec(CMCDefendant.cmcdefLogout)
-  
-  
+    
  /* setUp(
     CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (600)),
     CMC_Defendant.inject(nothingFor(1),rampUsers(500) during (600))
