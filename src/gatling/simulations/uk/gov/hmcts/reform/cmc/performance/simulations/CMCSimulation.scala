@@ -45,11 +45,6 @@ class CMCSimulation extends Simulation {
         .exec(CMC_Claimant_TestingSupport.testingsupportdefmobilepost)
         .exec(CMC_Claimant_TestingSupport.checkAndSend)
         .exec(EmailNotification.getPin)
-        /*.exec(CMCDefendant.startPage)
-        .exec(CMCDefendant.claimNumber)
-        // .exec(CMC_Defendant.enterpinGet)
-        .exec(CMCDefendant.enterpinPost)
-        .exec(CMCDefendant.ClaimSummary)*/
         .exec(CMC_Claimant.cmcLogout)
     }
   
@@ -112,17 +107,18 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.selfwitness)
     .exec(CMCDefendant.otherwitness)
     .exec(CMCDefendant.hearingdates)
-    .exec(CMCDefendant.checkAndSend)
+    //.exec(CMCDefendant.checkAndSend)
+    .exec(CMCDefendant.dashboard)
     .exec(CMCDefendant.cmcdefLogout)
     
- /* setUp(
+  setUp(
     CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (600)),
-    CMC_Defendant.inject(nothingFor(1),rampUsers(500) during (600))
-  ).protocols(httpProtocol)*/
+    CMC_Defendant.inject(nothingFor(1),rampUsers(400) during (600))
+  ).protocols(httpProtocol)
   
   // below setup is to create bulk claims for the defendants
   
-  setUp(
+ /* setUp(
     CMCClaimsTS.inject(nothingFor(1),rampUsers(500) during (3600))
-  ).protocols(httpProtocol)
+  ).protocols(httpProtocol)*/
 }
