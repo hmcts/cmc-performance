@@ -1,5 +1,7 @@
 package uk.gov.hmcts.reform.cmc.performance.scenarios
 
+import java.io.{BufferedWriter, FileWriter}
+
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import uk.gov.hmcts.reform.cmc.performance.scenarios.utils.CsrfCheck.{csrfParameter, csrfTemplate}
@@ -162,13 +164,15 @@ object CMCDefendant {
       .formParam ("_csrf", "${csrf}")
       .check(status.in(200,201,204))
       .check(regex("Claims made against you"))
+      .check(regex("""moj-pagination__results-text\">(.+)</b>""").saveAs("claimCount"))
      .check(regex("""<a href="/dashboard/(.+)/defendant"""").find(6).optional.saveAs("claimId"))
+     
     ).exitHereIfFailed
   }.pause (MinThinkTime seconds, MaxThinkTime seconds)
   
   //following commented code will be used to get the claim count and so not removing this
   
-    /*.exec {
+    .exec {
     session =>
       val fw = new BufferedWriter (new FileWriter ("defendantclaimsnumber.csv", true))
       try {
@@ -176,7 +180,7 @@ object CMCDefendant {
       }
       finally fw.close ()
       session
-  }*/
+  }
   
   val casetaskList =
     group("CMCDefRes_030_Tasklist") {
