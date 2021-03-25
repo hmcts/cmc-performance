@@ -33,7 +33,7 @@ class CMCSimulation extends Simulation {
   
   val CMCClaimsTS = scenario("CMC Claims Testing Support")
     .feed(defendantloginFeeder).feed(loginFeeder)
-    .repeat(2) {
+    .repeat(1) {
       exec(CMC_Claimant_TestingSupport.home)
         .exec(CMC_Claimant_TestingSupport.login)
         .exec(CMC_Claimant_TestingSupport.testingSupport)
@@ -78,7 +78,7 @@ class CMCSimulation extends Simulation {
   
   //below scenario is to link the claims to defendants for datagen
   
-  val CMC_Defendant=scenario("CMC Defendants")
+  val CMC_Defendant=scenario("Claims Linking To Defendants")
     .feed(defendantdetailsFeed)
     .exec(CMCDefendant.landingPage)
     .exec(CMCDefendant.startPage)
@@ -116,7 +116,14 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.cmcdefLogout)
   
   
+ /* setUp(
+    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (600)),
+    CMC_Defendant.inject(nothingFor(1),rampUsers(500) during (600))
+  ).protocols(httpProtocol)*/
+  
+  // below setup is to create bulk claims for the defendants
+  
   setUp(
-    CMC_Defendant.inject(nothingFor(1),rampUsers(2823) during (7200))
+    CMCClaimsTS.inject(nothingFor(1),rampUsers(500) during (3600))
   ).protocols(httpProtocol)
 }
