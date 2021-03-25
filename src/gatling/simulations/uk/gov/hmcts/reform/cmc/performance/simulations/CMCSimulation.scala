@@ -14,8 +14,8 @@ class CMCSimulation extends Simulation {
   val httpProtocol = Environment.HttpProtocol
     .baseUrl(BaseURL)
     //.doNotTrackHeader("1")
-    //.inferHtmlResources()
-    //.silentResources
+    .inferHtmlResources()
+    .silentResources
     .acceptHeader("*/*")
     .acceptEncodingHeader("gzip, deflate")
     .acceptLanguageHeader("en-GB,en;q=0.5")
