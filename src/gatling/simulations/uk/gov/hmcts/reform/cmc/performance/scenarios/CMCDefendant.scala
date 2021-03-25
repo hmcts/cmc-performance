@@ -15,6 +15,8 @@ object CMCDefendant {
   val IdAMURL = Environment.idamURL
   val MinThinkTime = Environment.minThinkTime
   val MaxThinkTime = Environment.maxThinkTime
+  val LinkMinThinkTime = Environment.linkminThinkTime
+  val LinkMaxThinkTime = Environment.linkmaxThinkTime
   val CommonHeader = Environment.commonHeader
   val paymentURL = Environment.PaymentURL
   val TotalAmount = scala.util.Random.nextInt(9999)
@@ -34,7 +36,7 @@ object CMCDefendant {
             .check(status.in(200,201,204))
         .check (regex ("Start now")))
     }
-    .pause(MinThinkTime seconds,MaxThinkTime seconds)
+    .pause(LinkMinThinkTime seconds,LinkMaxThinkTime seconds)
   
   val startPage=
     group("CMCLinkClaim_020_LandingPage_Post") {
@@ -49,7 +51,7 @@ object CMCDefendant {
         .check (regex ("Enter your claim number"))
       )
     }
-    .pause(MinThinkTime seconds,MaxThinkTime seconds)
+      .pause(LinkMinThinkTime seconds,LinkMaxThinkTime seconds)
   
   val claimNumber =
     group("CMCLinkClaim_030_ClaimNumber") {
@@ -67,7 +69,7 @@ object CMCDefendant {
         .check (regex ("Enter security code"))
       )
     }
-      .pause(MinThinkTime seconds,MaxThinkTime seconds)
+      .pause(LinkMinThinkTime seconds,LinkMaxThinkTime seconds)
   
   val enterpinPost=
     group("CMCLinkClaim_040_Pin"){
@@ -86,7 +88,7 @@ object CMCDefendant {
         .check (regex ("Claim details"))
       )
     }
-      .pause(MinThinkTime seconds,MaxThinkTime seconds)
+      .pause(LinkMinThinkTime seconds,LinkMaxThinkTime seconds)
   
   
   val ClaimSummary =
@@ -101,8 +103,8 @@ object CMCDefendant {
         .check (regex ("Create an account or sign in"))
       )
     }
-      
-      .pause(MinThinkTime seconds,MaxThinkTime seconds)
+  
+      .pause(LinkMinThinkTime seconds,LinkMaxThinkTime seconds)
   
   val loginAsDefendantGet =
     group("CMCDef_060_Login_As_DefendantGet") {
@@ -116,7 +118,7 @@ object CMCDefendant {
         .check (CurrentPageCheck.save)
         .check (CsrfCheck.save))
     }
-      .pause (MinThinkTime seconds, MaxThinkTime seconds)
+      .pause(LinkMinThinkTime seconds,LinkMaxThinkTime seconds)
   
   val loginAsDefendant=
     group("CMCDef_070_Login_As_Defendant") {
@@ -129,7 +131,7 @@ object CMCDefendant {
         .check (regex (" Claims made against you"))
       )
     }
-      .pause (MinThinkTime seconds, MaxThinkTime seconds)
+      .pause(LinkMinThinkTime seconds,LinkMaxThinkTime seconds)
   
   /*========================================================================================
   // below are the defendant response details
