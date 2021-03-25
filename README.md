@@ -1,29 +1,29 @@
 REPO 
-- SSCS SYA & MYA Performance Testing
+- CMC Performance Testing
 
 ==================================================================
 
 DESCRIPTION
-- This repo consists of both the SYA & MYA journeys
+- This repo consists of both the CMC Claimant and Defendant journeys
 
 ==================================================================
 
-SYA JOURNEY
-- User views Dashboard for draft cases
-- Uploads a 2Mb file for evidence
+Claimant JOURNEY
+- Citizen create claims against a Defendant
+
 
 ==================================================================
 
-MYA JOURNEY
-- User clicks through the screen
-- Uploads a 2Mb file for evidence
+Defendant Response  JOURNEY
+- Once claim is created against the Defendant, then Defendant can login and 
+-respond to the claim 
 
 ==================================================================
 
-SYA DATA GENERATION
+CMC DATA GENERATION
 
-- 20%: New applications -  User is created. Complete a SYA journey
-- 20%: 3 drafts - User is created. 3 x drafts are created to the SYA_120_DecidedIndependent transaction
+- Complete the claims against around 100 defendants make sure each defendant will have atleast 100 claims 
+- 
 - 30%: 10 drafts - User is created. 10 x drafts are created to the SYA_120_DecidedIndependent transaction
 - 30%: 15 drafts - User is created. 15 x drafts are created to the SYA_120_DecidedIndependent transaction
 

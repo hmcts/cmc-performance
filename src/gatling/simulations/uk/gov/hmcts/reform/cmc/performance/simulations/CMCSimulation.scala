@@ -117,6 +117,6 @@ class CMCSimulation extends Simulation {
   
   
   setUp(
-    CMCClaimsTS.inject(nothingFor(1),rampUsers(2000) during (5400))
+    CMC_Defendant.inject(nothingFor(1),rampUsers(2823) during (7200))
   ).protocols(httpProtocol)
 }

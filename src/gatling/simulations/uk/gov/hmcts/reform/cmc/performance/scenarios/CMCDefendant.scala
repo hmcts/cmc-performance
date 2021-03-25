@@ -27,6 +27,7 @@ object CMCDefendant {
         .get ("/first-contact/start")
           .headers(Environment.headers_firstcontact)
         .check (CsrfCheck.save)
+            .check(status.in(200,201,204))
         .check (regex ("Start now")))
     }
     .pause(MinThinkTime seconds,MaxThinkTime seconds)
@@ -38,6 +39,7 @@ object CMCDefendant {
           .headers(Environment.headers_25)
         .formParam (csrfParameter, csrfTemplate)
         .formParam ("start-button", "Start now")
+        .check(status.in(200,201,204))
         .check (CurrentPageCheck.save)
         .check (CsrfCheck.save)
         .check (regex ("Enter your claim number"))
@@ -55,6 +57,7 @@ object CMCDefendant {
         .check(css("input[name='redirect_uri']", "value").saveAs("redirectUri"))
         .check(css("input[name='client_id']", "value").saveAs("clientId"))
         .check(css("input[name='state']", "value").saveAs("state"))
+        .check(status.in(200,201,204))
         .check (CsrfCheck.save)
         .check (CurrentPageCheck.save)
         .check (regex ("Enter security code"))
@@ -73,6 +76,7 @@ object CMCDefendant {
         .formParam ("redirect_uri","${redirectUri}")
         .formParam ("client_id","${clientId}")
         .formParam ("state","${state}")
+        .check(status.in(200,201,204))
         .check (CurrentPageCheck.save)
         .check (CsrfCheck.save)
         .check (regex ("Claim details"))
@@ -87,6 +91,7 @@ object CMCDefendant {
         .post (currentPageTemplate)
           .headers(Environment.headers_25)
         .formParam (csrfParameter, csrfTemplate)
+        .check(status.in(200,201,204))
         .check (CurrentPageCheck.save)
        // .check (CsrfCheck.save)
         .check (regex ("Create an account or sign in"))
@@ -151,9 +156,10 @@ object CMCDefendant {
       .formParam("save", "Sign in")
       .formParam("selfRegistrationEnabled", "true")
       .formParam ("_csrf", "${csrf}")
+      .check(status.in(200,201,204))
       .check(regex("Claims made against you"))
       /*.check(substring("""<a href="/dashboard/""").count.saveAs("claimCount")) // count for how many draft cases*/
-      .check(regex("""<a href="/dashboard/(.+)/defendant"""").find(1).optional.saveAs("claimId"))
+      .check(regex("""<a href="/dashboard/(.+)/defendant"""").find(5).optional.saveAs("claimId"))
     )
     // .check (regex ("Find out if you can make a claim using this service")))
   }.pause (MinThinkTime seconds, MaxThinkTime seconds)
@@ -172,6 +178,7 @@ object CMCDefendant {
     group("CMCDefRes_030_Tasklist") {
       exec (http ("TaskList")
         .get ("/case/${claimId}/response/task-list")
+        .check(status.in(200,201,204))
         //.check (CsrfCheck.save)
         .check (CurrentPageCheck.save)
       )
@@ -227,6 +234,7 @@ object CMCDefendant {
         .formParam ("date[month]", "08")
         .formParam ("date[year]", "1978")
         .formParam ("saveAndContinue", "Save and continue")
+        .check(status.in(200,201,204))
         .check (CsrfCheck.save)
         .check (CurrentPageCheck.save)
         // .check(regex("Add a contact number"))
@@ -241,6 +249,7 @@ object CMCDefendant {
         .formParam (csrfParameter, csrfTemplate)
         .formParam ("number", "07548723412")
         .formParam ("saveAndContinue", "Save and continue")
+        .check(status.in(200,201,204))
         //.check (CsrfCheck.save)
         .check (CurrentPageCheck.save)
       )
@@ -254,7 +263,8 @@ object CMCDefendant {
     group("CMCDefRes_070_MoreTimeRequestGet") {
       exec (http ("Response_MoreTimeRequest_Get")
         // .get("/case/38ea3269-a024-46f3-a6ca-03828f5f3da6/response/more-time-request"))
-        .get (currentPageTemplate)
+        .get ("/case/${claimId}/response/more-time-request")
+        .check(status.in(200,201,204))
         .check (CsrfCheck.save)
       )
     }
@@ -265,6 +275,7 @@ object CMCDefendant {
           .formParam (csrfParameter, csrfTemplate)
           .formParam ("option", "no")
           .formParam ("saveAndContinue", "Save and continue")
+          .check(status.in(200,201,204))
           //.check (CsrfCheck.save)
           .check (CurrentPageCheck.save)
           // .check(regex("Do you want more time to respond?"))
@@ -277,6 +288,7 @@ object CMCDefendant {
     group("CMCDefRes_080_ResponseType") {
       exec (http ("Response_ResponseType_Get")
         .get("/case/${claimId}/response/response-type")
+        .check(status.in(200,201,204))
         .check (CsrfCheck.save))
     }
         .pause(MinThinkTime seconds, MaxThinkTime seconds)
@@ -288,6 +300,7 @@ object CMCDefendant {
           .formParam (csrfParameter, csrfTemplate)
           .formParam ("type[value]", "DEFENCE")
           .formParam ("saveAndContinue", "Save and continue")
+          .check(status.in(200,201,204))
           .check (CsrfCheck.save)
           .check (CurrentPageCheck.save)
           //.check(regex("How do you respond to the claim?"))
@@ -302,10 +315,11 @@ object CMCDefendant {
         // .get("/case/38ea3269-a024-46f3-a6ca-03828f5f3da6/response/reject-all-of-claim")
         .get (currentPageTemplate))*/
         exec (http ("Response_Reject_All_Of_Claim_Post")
-          .post (currentPageTemplate)
+          .post ("/case/${claimId}/response/reject-all-of-claim")
           .formParam (csrfParameter, csrfTemplate)
           .formParam ("option", "dispute")
           .formParam ("saveAndContinue", "Save and continue")
+          .check(status.in(200,201,204))
           //.check (CsrfCheck.save)
           .check (CurrentPageCheck.save)
           //	.check(regex("Why do you reject the claim?"))
@@ -318,16 +332,18 @@ object CMCDefendant {
     group("CMCDefRes_100_YourDefence") {
       exec (http ("Response_Your_Defence_Post_Get")
         .get ("/case/${claimId}/response/your-defence")
+        .check(status.in(200,201,204))
         .check (CsrfCheck.save))
     }
         .pause(MinThinkTime seconds, MaxThinkTime seconds)
        // .get (currentPageTemplate))
-  group("CMCDefRes_100_YourDefencePost"){
+    .group("CMCDefRes_100_YourDefencePost"){
         exec (http ("Response_Your_Defence_Post")
           .post ("/case/${claimId}/response/your-defence")
           .formParam (csrfParameter, csrfTemplate)
           .formParam ("text", "adadasdfadad")
           .formParam ("saveAndContinue", "Save and continue")
+          .check(status.in(200,201,204))
           .check (CsrfCheck.save)
           .check (CurrentPageCheck.save)
           //.check(regex("Why do you disagree with the claim?"))
@@ -340,38 +356,39 @@ object CMCDefendant {
       exec (http ("Response_TimeLine")
         .post ("/case/${claimId}/response/timeline")
         .formParam (csrfParameter, csrfTemplate)
-        .formParam ("rows[0][date]", "1 Sep 2020")
-        .formParam ("rows[0][description]", "asasasasasasas")
-        .formParam ("rows[1][date]", "3 Jan 2021")
-        .formParam ("rows[1][description]", "asasasas")
-        .formParam ("rows[2][date]", "")
-        .formParam ("rows[2][description]", "")
-        .formParam ("rows[3][date]", "")
-        .formParam ("rows[3][description]", "")
-        .formParam ("comment", "")
+        .formParam("rows[0][date]", "01 June 2019")
+        .formParam("rows[0][description]", "asasasasasas")
+        .formParam("rows[1][date]", "01 Sep 2019")
+        .formParam("rows[1][description]", "sdsdsdsdsdsd")
+        .formParam("rows[2][date]", "")
+        .formParam("rows[2][description]", "")
+        .formParam("rows[3][date]", "")
+        .formParam("rows[3][description]", "")
+        .formParam("comment", "")
         .formParam ("saveAndContinue", "Save and continue")
+        .check(status.in(200,201,204))
         .check (CsrfCheck.save)
         .check (CurrentPageCheck.save)
-        	.check(regex("Add your timeline of events"))
       )
     }
     .pause(MinThinkTime seconds, MaxThinkTime seconds)
   
   val evidence=
-    group("CMCDefRes_120_ResponseEvidence") {
+      group("CMCDefRes_120_ResponseEvidence") {
       exec (http ("Response_Evidence")
         .post ("/case/${claimId}/response/evidence")
         .formParam (csrfParameter, csrfTemplate)
-        .formParam ("rows[0][type]", "RECEIPTS")
-        .formParam ("rows[0][description]", "asasas")
-        .formParam ("rows[1][type]", "PHOTO")
-        .formParam ("rows[1][description]", "asasasasa")
-        .formParam ("rows[2][type]", "")
-        .formParam ("rows[2][description]", "")
-        .formParam ("rows[3][type]", "")
-        .formParam ("rows[3][description]", "")
-        .formParam ("comment", "")
+        .formParam("rows[0][type]", "PHOTO")
+        .formParam("rows[0][description]", "asasasasas")
+        .formParam("rows[1][type]", "RECEIPTS")
+        .formParam("rows[1][description]", "sdsdsdsd")
+        .formParam("rows[2][type]", "")
+        .formParam("rows[2][description]", "")
+        .formParam("rows[3][type]", "")
+        .formParam("rows[3][description]", "")
+        .formParam("comment", "")
         .formParam ("saveAndContinue", "Save and continue")
+        .check(status.in(200,201,204))
        // .check (CsrfCheck.save)
         .check (CurrentPageCheck.save)
       )
@@ -382,15 +399,17 @@ object CMCDefendant {
   val freeMediation =
     group("CMCDefRes_120_FreeMediation") {
       exec (http ("Response_Free_Mediation_Get")
-        .get ("/case/${claimId}/response/free-mediation")
+        .get ("/case/${claimId}/mediation/free-mediation")
+        .check(status.in(200,201,204))
         .check (CsrfCheck.save))
     }
         .pause(MinThinkTime seconds, MaxThinkTime seconds)
   
-  group("CMCDefRes_120_FreeMediationPost") {
+    .group("CMCDefRes_120_FreeMediationPost") {
         exec (http ("Response_Free_Mediation_Post")
           .post ("/case/${claimId}/mediation/free-mediation")
           .formParam (csrfParameter, csrfTemplate)
+          .check(status.in(200,201,204))
           .check (CsrfCheck.save)
           .check (CurrentPageCheck.save)
           //	.check(regex("Free mediation"))
@@ -408,6 +427,7 @@ object CMCDefendant {
           .post ("/case/${claimId}/mediation/how-mediation-works")
           .formParam (csrfParameter, csrfTemplate)
           .formParam ("mediationYes", "Continue with free mediation")
+          .check(status.in(200,201,204))
           .check (CsrfCheck.save)
           .check (CurrentPageCheck.save)
           //	.check(regex("Free mediation"))
@@ -426,6 +446,7 @@ object CMCDefendant {
           .post ("/case/${claimId}/mediation/mediation-agreement")
           .formParam (csrfParameter, csrfTemplate)
           .formParam ("accept", "I agree")
+          .check(status.in(200,201,204))
           .check (CsrfCheck.save)
           .check (CurrentPageCheck.save)
           //	.check(regex("Free mediation"))
@@ -447,6 +468,7 @@ object CMCDefendant {
           .formParam (csrfParameter, csrfTemplate)
           .formParam ("accept", "I agree").formParam ("option", "no")
           .formParam ("mediationPhoneNumber", "07540657234")
+          .check(status.in(200,201,204))
          // .check (CsrfCheck.save)
           .check (CurrentPageCheck.save)
           //	.check(regex("Free mediation"))
@@ -458,13 +480,14 @@ object CMCDefendant {
     group("CMCDefRes_140_SupportRequiredGet") {
       exec (http ("support-required-Get")
         .get ("/case/${claimId}/directions-questionnaire/support-required")
+        .check(status.in(200,201,204))
         .check (CsrfCheck.save))
     }
       .pause(MinThinkTime seconds, MaxThinkTime seconds)
   
     .group("CMCDefRes_140_SupportRequiredGet") {
       exec (http ("Response_Free_Mediation_Post")
-        .post ("/case/${caseId}/directions-questionnaire/support-required")
+        .post ("/case/${claimId}/directions-questionnaire/support-required")
         .formParam (csrfParameter, csrfTemplate)
         .formParam ("signLanguageInterpreted", "")
         .formParam ("languageInterpreted", "")
@@ -484,12 +507,13 @@ object CMCDefendant {
         .get ("/case/${claimId}/directions-questionnaire/hearing-location"))*/
         
         exec (http ("Response_Free_Mediation_Post")
-          .post ("/case/${caseId}/directions-questionnaire/hearing-location")
+          .post ("/case/${claimId}/directions-questionnaire/hearing-location")
           .formParam (csrfParameter, csrfTemplate)
           .formParam ("courtAccepted", "yes")
           .formParam ("alternativePostcode", "")
           .formParam ("alternativeCourtName", "")
           .formParam ("courtName", "Central London County Court")
+          .check(status.in(200,201,204))
           .check (CsrfCheck.save)
           .check (CurrentPageCheck.save)
           //	.check(regex("Free mediation"))
@@ -500,10 +524,9 @@ object CMCDefendant {
   
   val expert=
     group("CMCDefRes_150_Expert") {
-      
-      
       exec (http ("Expert")
         .post ("/case/${claimId}/directions-questionnaire/expert")
+        .check(status.in(200,201,204))
         .formParam (csrfParameter, csrfTemplate)
         .check (CsrfCheck.save)
         .check (CurrentPageCheck.save)
@@ -512,14 +535,10 @@ object CMCDefendant {
       )
     }
       .pause(MinThinkTime seconds, MaxThinkTime seconds)
-  
-  
-  
-  
   val selfwitness=
     group("CMCDefRes_160_SelfWitness") {
       exec (http ("SelfWitness")
-        .post ("/case/${caseId}/directions-questionnaire/self-witness")
+        .post ("/case/${claimId}/directions-questionnaire/self-witness")
         .formParam (csrfParameter, csrfTemplate)
         .formParam ("option", "no")
         .check (CsrfCheck.save)
@@ -531,7 +550,7 @@ object CMCDefendant {
   val otherwitness=
     group("CMCDefRes_170_OtherWitness") {
       exec (http ("Response_Free_Mediation_Post")
-        .post ("/case/${caseId}/directions-questionnaire/other-witnesses")
+        .post ("/case/${claimId}/directions-questionnaire/other-witnesses")
         .formParam (csrfParameter, csrfTemplate)
         .formParam ("howMany", "")
         .formParam ("otherWitnesses", "no")
@@ -545,32 +564,44 @@ object CMCDefendant {
   val hearingdates=
     group("CMCDefRes_180_HearingDates") {
       exec (http ("HearingDates")
-        .post ("/case/${caseId}/directions-questionnaire/hearing-dates")
+        .post ("/case/${claimId}/directions-questionnaire/hearing-dates")
         .formParam (csrfParameter, csrfTemplate)
         .formParam ("hasUnavailableDates", "false")
-        .check (CsrfCheck.save)
+        //.check (CsrfCheck.save)
         .check (CurrentPageCheck.save)
       )
     }
       .pause(MinThinkTime seconds, MaxThinkTime seconds)
   
   val checkAndSend=
-    group("CMCDefRes_190_CheckAndSend") {
-      exec (http ("Response_CheckAndSend_Get")
-        .get ("/case/${claimId}/response/check-and-send"))
-    
-        .exec (http ("Response_CheckAndSend_Post")
-          .post ("/case/${claimId}/response/check-and-send")
-          .formParam (csrfParameter, csrfTemplate)
-          .formParam ("signed", "true")
-          .formParam ("directionsQuestionnaireSigned", "true")
-          .formParam ("type", "directions")
-          .check (CsrfCheck.save)
-          .check (CurrentPageCheck.save)
-          .check (regex ("You’ve submitted your response"))
-        )
-        .pause (MinThinkTime seconds, MaxThinkTime seconds)
+    group("CMCDefRes_190_CheckAndSendGet1") {
+      exec (http ("Response_CheckAndSend_Get1")
+        .get ("/case/${claimId}/response/check-and-send")
+        .check(status.in(200,201,204)))
+        
     }
+        .pause(MinThinkTime seconds, MaxThinkTime seconds)
+  
+    .group("CMCDefRes_190_CheckAndSendGet2") {
+    exec (http ("Response_CheckAndSend_Get2")
+      .get ("/case/${claimId}/response/check-and-send")
+      .check(status.in(200,201,204))
+      .check (CsrfCheck.save))
+  }
+    .pause(MinThinkTime seconds, MaxThinkTime seconds)
+    .group("CMCDefRes_190_CheckAndSendPost") {
+      exec (http ("Response_CheckAndSend_Post")
+        .post ("/case/${claimId}/response/check-and-send")
+         // .headers(Environment.headers_checkAndSend)
+        .formParam (csrfParameter, csrfTemplate)
+        .formParam ("signed", "true")
+        .formParam ("directionsQuestionnaireSigned", "true")
+        .formParam ("type", "directions")
+        .check (regex ("You’ve submitted your response"))
+      )
+    }
+        .pause (MinThinkTime seconds, MaxThinkTime seconds)
+    
   val cmcdefLogout =
     group("CMCDefRes_200_Logout") {
       exec (http ("Deflogout")
