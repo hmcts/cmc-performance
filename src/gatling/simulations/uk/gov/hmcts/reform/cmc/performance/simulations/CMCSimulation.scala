@@ -111,18 +111,18 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.dashboard)*/
     .exec(CMCDefendant.cmcdefLogout)
     
-  /*setUp(
-    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (600)),
-    CMC_Defendant.inject(nothingFor(1),rampUsers(400) during (600))
-  ).protocols(httpProtocol)*/
+  setUp(
+    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (1200)),
+    CMC_Defendant.inject(nothingFor(1),rampUsers(200) during (1200))
+  ).protocols(httpProtocol)
   
   // below setup is to create bulk claims for the defendants
   
   /*setUp(
-    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (1200))
+    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(14) during (1200))
   ).protocols(httpProtocol)*/
   
-  setUp(
+  /*setUp(
     CMCClaimsTS.inject(nothingFor(1),rampUsers(500) during (3600))
-  ).protocols(httpProtocol)
+  ).protocols(httpProtocol)*/
 }
