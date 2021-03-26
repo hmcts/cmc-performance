@@ -88,7 +88,7 @@ class CMCSimulation extends Simulation {
     .feed(defendantloginFeeder)
     .exec(CMCDefendant.dashboard)
     .exec(CMCDefendant.defendantlogin)
-    /*.exec(CMCDefendant.casetaskList)
+    .exec(CMCDefendant.casetaskList)
     .exec(CMCDefendant.defendantDetails)
     .exec(CMCDefendant.dob)
     .exec(CMCDefendant.mobile)
@@ -108,12 +108,12 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.otherwitness)
     .exec(CMCDefendant.hearingdates)
     //.exec(CMCDefendant.checkAndSend)
-    .exec(CMCDefendant.dashboard)*/
+    .exec(CMCDefendant.dashboard)
     .exec(CMCDefendant.cmcdefLogout)
     
   setUp(
     CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (1200)),
-    CMC_Defendant.inject(nothingFor(1),rampUsers(200) during (1200))
+    CMC_Defendant.inject(nothingFor(20),rampUsers(200) during (1200))
   ).protocols(httpProtocol)
   
   // below setup is to create bulk claims for the defendants
