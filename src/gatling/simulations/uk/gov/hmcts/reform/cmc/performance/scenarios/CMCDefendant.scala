@@ -1,7 +1,5 @@
 package uk.gov.hmcts.reform.cmc.performance.scenarios
 
-import java.io.{BufferedWriter, FileWriter}
-
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import uk.gov.hmcts.reform.cmc.performance.scenarios.utils.CsrfCheck.{csrfParameter, csrfTemplate}
@@ -109,7 +107,7 @@ object CMCDefendant {
       .pause(LinkMinThinkTime seconds,LinkMaxThinkTime seconds)
   
   val loginAsDefendantGet =
-    group("CMCDef_060_Login_As_DefendantGet") {
+    group("CMCLinkClaim_060_LoginAsDefendantGet") {
       exec (http ("Login_As_DefendantGet")
         .get (currentPageTemplate)
           .check(status.in(201,200,204))
@@ -123,7 +121,7 @@ object CMCDefendant {
       .pause(LinkMinThinkTime seconds,LinkMaxThinkTime seconds)
   
   val loginAsDefendant=
-    group("CMCDef_070_Login_As_Defendant") {
+    group("CMCLinkClaim_070_Login_As_Defendant") {
         exec (http ("Login_As_Defendant")
         .post(IdAMURL+"/register?redirect_uri=${redirectURI}&client_id=${clientId}&state=${state}&scope=&jwt=${jwttoken}")
         .formParam (csrfParameter, csrfTemplate)
@@ -165,7 +163,7 @@ object CMCDefendant {
       .check(status.in(200,201,204))
       .check(regex("Claims made against you"))
      // .check(regex("""moj-pagination__results-text\">(.+)</b>""").saveAs("claimCount"))
-     .check(regex("""<a href="/dashboard/(.+)/defendant"""").find(8).optional.saveAs("claimId"))
+     .check(regex("""<a href="/dashboard/(.+)/defendant"""").find(3).optional.saveAs("claimId"))
      
     ).exitHereIfFailed
   }.pause (MinThinkTime seconds, MaxThinkTime seconds)
@@ -193,7 +191,9 @@ object CMCDefendant {
     }
       .pause(MinThinkTime seconds, MaxThinkTime seconds)
       
-        .group("CMCDefRes_040_YourDetailsGet") {
+      val yourdetailsconfirm=
+      
+        group("CMCDefRes_040_YourDetailsGet") {
         exec (http ("YourDetails_Get")
           .get ("/case/${claimId}/response/your-details")
           .check (CsrfCheck.save)

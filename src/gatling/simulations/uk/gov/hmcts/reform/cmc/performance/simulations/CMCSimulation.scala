@@ -73,7 +73,7 @@ class CMCSimulation extends Simulation {
   
   //below scenario is to link the claims to defendants for datagen
   
-  val CMC_Defendant=scenario("Claims Linking To Defendants")
+  val CMC_Link_Defendant=scenario("Claims Linking To Defendants")
     .feed(defendantdetailsFeed)
     .exec(CMCDefendant.landingPage)
     .exec(CMCDefendant.startPage)
@@ -89,6 +89,7 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.dashboard)
     .exec(CMCDefendant.defendantlogin)
     .exec(CMCDefendant.casetaskList)
+    .exec(CMCDefendant.yourdetailsconfirm)
     .exec(CMCDefendant.defendantDetails)
     .exec(CMCDefendant.dob)
     .exec(CMCDefendant.mobile)
@@ -113,7 +114,7 @@ class CMCSimulation extends Simulation {
     
   setUp(
     CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (1200)),
-    CMC_Defendant.inject(nothingFor(20),rampUsers(200) during (1200))
+    //CMC_Link_Defendant.inject(nothingFor(20),rampUsers(200) during (1200))
   ).protocols(httpProtocol)
   
   // below setup is to create bulk claims for the defendants
