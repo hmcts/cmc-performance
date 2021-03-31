@@ -2,7 +2,7 @@ package uk.gov.hmcts.reform.cmc.performance.simulations
 
 import io.gatling.core.Predef._
 import io.gatling.core.scenario.Simulation
-import uk.gov.hmcts.reform.cmc.performance.scenarios.{CMCDefendant, CMC_Claimant, CMC_Claimant_TestingSupport, CreateUser}
+import uk.gov.hmcts.reform.cmc.performance.scenarios._
 import uk.gov.hmcts.reform.cmc.performance.scenarios.utils.{EmailNotification, Environment}
 
 class CMCSimulation extends Simulation {
@@ -82,13 +82,15 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.ClaimSummary)
     .exec(CMCDefendant.loginAsDefendantGet)
     .exec(CMCDefendant.loginAsDefendant)
+    .exec(CMCDefendant.cmcdefLogout)
+  
   
   //below scenario is for OCMC testing the dashboard with defendants having more claims
   val CMC_Defendant_Response=scenario("CMC Defendants Response")
     .feed(defendantloginFeeder)
     .exec(CMCDefendant.dashboard)
     .exec(CMCDefendant.defendantlogin)
-    .exec(CMCDefendant.casetaskList)
+    /*.exec(CMCDefendant.casetaskList)
     .exec(CMCDefendant.yourdetailsconfirm)
     .exec(CMCDefendant.defendantDetails)
     .exec(CMCDefendant.dob)
@@ -109,11 +111,16 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.otherwitness)
     .exec(CMCDefendant.hearingdates)
     //.exec(CMCDefendant.checkAndSend)
-    .exec(CMCDefendant.dashboard)
+    .exec(CMCDefendant.dashboard)*/
     .exec(CMCDefendant.cmcdefLogout)
+  
+  val CMC_Defendant_Session=scenario("CMC Defendants Session Id")
+    .feed(defendantloginFeeder)
+    .exec(ClaimNumber.getIdamAuthCode)
+    .exec(ClaimNumber.getClaimNumber)
     
   setUp(
-    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (1200)),
+    CMC_Defendant_Session.inject(nothingFor(1),rampUsers(33) during (1200))
     //CMC_Link_Defendant.inject(nothingFor(20),rampUsers(200) during (1200))
   ).protocols(httpProtocol)
   
