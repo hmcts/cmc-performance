@@ -120,7 +120,7 @@ class CMCSimulation extends Simulation {
     .exec(ClaimNumber.getClaimNumber)
     
   setUp(
-    CMC_Defendant_Session.inject(nothingFor(1),rampUsers(33) during (1200))
+    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(33) during (1200))
     //CMC_Link_Defendant.inject(nothingFor(20),rampUsers(200) during (1200))
   ).protocols(httpProtocol)
   
