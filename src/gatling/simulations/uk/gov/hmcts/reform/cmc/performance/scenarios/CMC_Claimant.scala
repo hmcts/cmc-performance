@@ -556,13 +556,13 @@ val TotalAmount = scala.util.Random.nextInt(9999)
       
       .pause(MinThinkTime seconds,MaxThinkTime seconds)
       
-      .exec {
+      /*.exec {
       session =>
       println("this is a pdf download url ....." + session("pdfDownload").as[String])
       println("claim number ....." + session("claimNumber").as[String])
       
       session
-      }
+      }*/
       // download pdf file related to claim
       .group("TX040_CMC_PDF_Download") {
       exec (http ("TX040_CMC_PDF_Download")

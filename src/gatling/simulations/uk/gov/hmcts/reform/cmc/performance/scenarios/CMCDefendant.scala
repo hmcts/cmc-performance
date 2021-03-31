@@ -153,7 +153,7 @@ object CMCDefendant {
   
   // Enter Login credentials. This will load either postcode or dashboard
   val defendantlogin =
-    group ("CMCDef{claimstotal}_020_SignIn") {
+    group ("CMCDef${claimstotal}_020_SignIn") {
     exec (http ("Signin")
       .post ("${currentPage}")
       .formParam("username", "${defemail}")

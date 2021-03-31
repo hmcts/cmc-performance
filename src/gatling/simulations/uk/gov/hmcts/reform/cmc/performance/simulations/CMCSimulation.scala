@@ -10,6 +10,7 @@ class CMCSimulation extends Simulation {
   val BaseURL = Environment.baseURL
   val loginFeeder = csv("login.csv").circular
   val defendantloginFeeder = csv("defendantlogin.csv").circular
+  val claimcreatedefuserFeeder = csv("claimcreatedeflogin.csv").circular
   val defendantdetailsFeed=csv("defendantdetails.csv").circular
   val httpProtocol = Environment.HttpProtocol
     .baseUrl(BaseURL)
@@ -32,7 +33,7 @@ class CMCSimulation extends Simulation {
   //below scenario is to generate claims data
   
   val CMCClaimsTS = scenario("CMC Claims Testing Support")
-    .feed(defendantloginFeeder).feed(loginFeeder)
+    .feed(claimcreatedefuserFeeder).feed(loginFeeder)
     .repeat(1) {
       exec(CMC_Claimant_TestingSupport.home)
         .exec(CMC_Claimant_TestingSupport.login)
@@ -114,15 +115,15 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.dashboard)*/
     .exec(CMCDefendant.cmcdefLogout)
   
-  val CMC_Defendant_Session=scenario("CMC Defendants Session Id")
+  val CMC_Defendant_Session=scenario("CMC Defendants Claim Numbers")
     .feed(defendantloginFeeder)
     .exec(ClaimNumber.getIdamAuthCode)
     .exec(ClaimNumber.getClaimNumber)
     
-  setUp(
-    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(33) during (1200))
+ /* setUp(
+    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(34) during (1200))
     //CMC_Link_Defendant.inject(nothingFor(20),rampUsers(200) during (1200))
-  ).protocols(httpProtocol)
+  ).protocols(httpProtocol)*/
   
   // below setup is to create bulk claims for the defendants
   
@@ -130,7 +131,7 @@ class CMCSimulation extends Simulation {
     CMC_Defendant_Response.inject(nothingFor(1),rampUsers(14) during (1200))
   ).protocols(httpProtocol)*/
   
-  /*setUp(
-    CMCClaimsTS.inject(nothingFor(1),rampUsers(500) during (3600))
-  ).protocols(httpProtocol)*/
+  setUp(
+    CMCClaimsTS.inject(nothingFor(1),rampUsers(1500) during (3600))
+  ).protocols(httpProtocol)
 }

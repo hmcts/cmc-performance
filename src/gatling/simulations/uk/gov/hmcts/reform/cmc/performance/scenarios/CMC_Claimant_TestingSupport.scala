@@ -180,13 +180,13 @@ object CMC_Claimant_TestingSupport {
         session
     }*/
       // download pdf file related to claim
-    .group("TX040_CMC_PDF_Download") {
+   /* .group("TX040_CMC_PDF_Download") {
       exec (http ("TX040_CMC_PDF_Download")
         .get ("${pdfDownload}")
         .check (status.is (200)))
     }
     .pause(MinThinkTime seconds,MaxThinkTime seconds)
-    .pause(30)
+    .pause(30)*/
   
   val cmcLogout =
     group("TX050_CMC_Logout") {
