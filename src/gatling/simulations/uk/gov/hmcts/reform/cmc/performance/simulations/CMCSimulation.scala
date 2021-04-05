@@ -122,8 +122,8 @@ class CMCSimulation extends Simulation {
     .exec(ClaimNumber.getClaimNumber)
     
   setUp(
-    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (1200))
-      CMC_Link_Defendant.inject(nothingFor(20),rampUsers(300) during (1200))
+    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (1200)),
+      CMC_Link_Defendant.inject(nothingFor(50),rampUsers(300) during (1200))
   ).protocols(httpProtocol)
   
   // below setup is to create bulk claims for the defendants
