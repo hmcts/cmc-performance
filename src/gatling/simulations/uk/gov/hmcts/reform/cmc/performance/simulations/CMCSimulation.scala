@@ -92,7 +92,7 @@ class CMCSimulation extends Simulation {
     .feed(defendantloginFeeder)
     .exec(CMCDefendant.dashboard)
     .exec(CMCDefendant.defendantlogin)
-    .exec(CMCDefendant.casetaskList)
+    /*.exec(CMCDefendant.casetaskList)
     .exec(CMCDefendant.yourdetailsconfirm)
     .exec(CMCDefendant.defendantDetails)
     .exec(CMCDefendant.dob)
@@ -113,7 +113,7 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.otherwitness)
     .exec(CMCDefendant.hearingdates)
     //.exec(CMCDefendant.checkAndSend)
-    .exec(CMCDefendant.dashboard)
+    .exec(CMCDefendant.dashboard)*/
     .exec(CMCDefendant.cmcdefLogout)
   
   val CMC_Defendant_Session=scenario("CMC Defendants Claim Numbers")
