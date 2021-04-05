@@ -34,7 +34,8 @@ class CMCSimulation extends Simulation {
   
   val CMCClaimsTS = scenario("CMC Claims Testing Support")
     .feed(claimcreatedefuserFeeder).feed(loginFeeder)
-    .repeat(1) {
+    .repeat("${repeatcount}"){
+    //.repeat(1){
       exec(CMC_Claimant_TestingSupport.home)
         .exec(CMC_Claimant_TestingSupport.login)
         .exec(CMC_Claimant_TestingSupport.testingSupport)
@@ -91,7 +92,7 @@ class CMCSimulation extends Simulation {
     .feed(defendantloginFeeder)
     .exec(CMCDefendant.dashboard)
     .exec(CMCDefendant.defendantlogin)
-    /*.exec(CMCDefendant.casetaskList)
+    .exec(CMCDefendant.casetaskList)
     .exec(CMCDefendant.yourdetailsconfirm)
     .exec(CMCDefendant.defendantDetails)
     .exec(CMCDefendant.dob)
@@ -112,7 +113,7 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.otherwitness)
     .exec(CMCDefendant.hearingdates)
     //.exec(CMCDefendant.checkAndSend)
-    .exec(CMCDefendant.dashboard)*/
+    .exec(CMCDefendant.dashboard)
     .exec(CMCDefendant.cmcdefLogout)
   
   val CMC_Defendant_Session=scenario("CMC Defendants Claim Numbers")
@@ -132,6 +133,6 @@ class CMCSimulation extends Simulation {
   ).protocols(httpProtocol)*/
   
   setUp(
-    CMC_Link_Defendant.inject(nothingFor(1),rampUsers(1400) during (3600))
+    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (1200))
   ).protocols(httpProtocol)
 }
