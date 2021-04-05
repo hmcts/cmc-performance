@@ -153,7 +153,7 @@ object CMCDefendant {
   
   // Enter Login credentials. This will load either postcode or dashboard
   val defendantlogin =
-    group ("CMCDef${claimstotal}_020_SignIn") {
+    group ("CMCDef_${claimstotal}_020_SignIn") {
     exec (http ("Signin")
       .post ("${currentPage}")
       .formParam("username", "${defemail}")
@@ -164,7 +164,7 @@ object CMCDefendant {
       .check(status.in(200,201,204))
       .check(substring("Claims made against you"))
       //.check(regex("""moj-pagination__results-text\">(.+)</b>""").saveAs("claimCount"))
-    // .check(regex("""<a href="/dashboard/(.+)/defendant"""").find(3).optional.saveAs("claimId"))
+     .check(regex("""<a href="/dashboard/(.+)/defendant"""").find(7).optional.saveAs("claimId"))
       
       ).exitHereIfFailed
   }.pause (MinThinkTime seconds, MaxThinkTime seconds)

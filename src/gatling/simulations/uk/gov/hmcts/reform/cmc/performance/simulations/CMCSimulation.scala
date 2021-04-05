@@ -34,8 +34,8 @@ class CMCSimulation extends Simulation {
   
   val CMCClaimsTS = scenario("CMC Claims Testing Support")
     .feed(claimcreatedefuserFeeder).feed(loginFeeder)
-    .repeat("${repeatcount}"){
-    //.repeat(1){
+    //.repeat("${repeatcount}"){
+    .repeat(1){
       exec(CMC_Claimant_TestingSupport.home)
         .exec(CMC_Claimant_TestingSupport.login)
         .exec(CMC_Claimant_TestingSupport.testingSupport)
@@ -92,7 +92,7 @@ class CMCSimulation extends Simulation {
     .feed(defendantloginFeeder)
     .exec(CMCDefendant.dashboard)
     .exec(CMCDefendant.defendantlogin)
-    /*.exec(CMCDefendant.casetaskList)
+    .exec(CMCDefendant.casetaskList)
     .exec(CMCDefendant.yourdetailsconfirm)
     .exec(CMCDefendant.defendantDetails)
     .exec(CMCDefendant.dob)
@@ -113,7 +113,7 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.otherwitness)
     .exec(CMCDefendant.hearingdates)
     //.exec(CMCDefendant.checkAndSend)
-    .exec(CMCDefendant.dashboard)*/
+    .exec(CMCDefendant.dashboard)
     .exec(CMCDefendant.cmcdefLogout)
   
   val CMC_Defendant_Session=scenario("CMC Defendants Claim Numbers")
@@ -121,10 +121,10 @@ class CMCSimulation extends Simulation {
     .exec(ClaimNumber.getIdamAuthCode)
     .exec(ClaimNumber.getClaimNumber)
     
- /* setUp(
-    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(34) during (1200))
-    //CMC_Link_Defendant.inject(nothingFor(20),rampUsers(200) during (1200))
-  ).protocols(httpProtocol)*/
+  setUp(
+    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (1200))
+      CMC_Link_Defendant.inject(nothingFor(20),rampUsers(300) during (1200))
+  ).protocols(httpProtocol)
   
   // below setup is to create bulk claims for the defendants
   
@@ -132,7 +132,7 @@ class CMCSimulation extends Simulation {
     CMC_Defendant_Response.inject(nothingFor(1),rampUsers(14) during (1200))
   ).protocols(httpProtocol)*/
   
-  setUp(
-    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (1200))
-  ).protocols(httpProtocol)
+  /*setUp(
+    CMCClaimsTS.inject(nothingFor(1),rampUsers(320) during (1800))
+  ).protocols(httpProtocol)*/
 }

@@ -17,8 +17,8 @@ object Environment {
   val minThinkTime = 80//100//140
   val maxThinkTime = 80//100//150
   
-  val linkminThinkTime = 30//140
-  val linkmaxThinkTime = 30//150
+  val linkminThinkTime = 140
+  val linkmaxThinkTime = 150
   
   val commonHeader = Map(
     "Accept" -> "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
