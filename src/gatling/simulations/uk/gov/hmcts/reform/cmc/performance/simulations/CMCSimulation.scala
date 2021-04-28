@@ -121,15 +121,15 @@ class CMCSimulation extends Simulation {
     .exec(ClaimNumber.getIdamAuthCode)
     .exec(ClaimNumber.getClaimNumber)
     
-  /*setUp(
+  setUp(
     CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (1200)),
       CMC_Link_Defendant.inject(nothingFor(50),rampUsers(300) during (1200))
-  ).protocols(httpProtocol)*/
+  ).protocols(httpProtocol)
   
-  setUp(
+ /* setUp(
     CMC_Defendant_Response.inject(nothingFor(1),rampUsers(1) during (1)),
     CMC_Link_Defendant.inject(nothingFor(50),rampUsers(1) during (1))
-  ).protocols(httpProtocol)
+  ).protocols(httpProtocol)*/
   
   // below setup is to create bulk claims for the defendants
   
