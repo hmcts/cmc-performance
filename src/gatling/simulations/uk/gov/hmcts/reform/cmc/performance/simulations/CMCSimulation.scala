@@ -10,6 +10,7 @@ class CMCSimulation extends Simulation {
   val BaseURL = Environment.baseURL
   val loginFeeder = csv("login.csv").circular
   val defendantloginFeeder = csv("defendantlogin.csv").circular
+  val claimNumbersFeeder = csv("defendantloginclaimnumbers.csv").circular
   val claimcreatedefuserFeeder = csv("claimcreatedeflogin.csv").circular
   val defendantdetailsFeed=csv("defendantdetails.csv").circular
   val httpProtocol = Environment.HttpProtocol
@@ -117,7 +118,7 @@ class CMCSimulation extends Simulation {
     .exec(CMCDefendant.cmcdefLogout)
   
   val CMC_Defendant_Session=scenario("CMC Defendants Claim Numbers")
-    .feed(defendantloginFeeder)
+    .feed(claimNumbersFeeder)
     .exec(ClaimNumber.getIdamAuthCode)
     .exec(ClaimNumber.getClaimNumber)
     
@@ -133,8 +134,8 @@ class CMCSimulation extends Simulation {
   
   // below setup is to create bulk claims for the defendants
   
- /* setUp(
-    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(14) during (1200))
+  /*setUp(
+    CMC_Defendant_Session.inject(nothingFor(1),rampUsers(20) during (600))
   ).protocols(httpProtocol)*/
   
   /*setUp(

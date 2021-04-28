@@ -17,7 +17,7 @@ object CMC_Claimant_TestingSupport {
   val paymentURL = Environment.PaymentURL
   val TotalAmount = scala.util.Random.nextInt(9999)
   
-  val loginfeeder = csv ("postcodes.csv").random
+ 
   
   val home =
     
