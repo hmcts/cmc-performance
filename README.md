@@ -5,11 +5,13 @@ REPO
 
 DESCRIPTION
 - This repo consists of both the CMC Claimant and Defendant journeys
+- Linking claims to defendants
 
 ==================================================================
 
 Claimant JOURNEY
 - Citizen create claims against a Defendant
+- There are multiple claims create against the single defendant for example holiday homes 
 
 
 ==================================================================
@@ -21,18 +23,12 @@ Defendant Response  JOURNEY
 ==================================================================
 
 CMC DATA GENERATION
-
-- Complete the claims against around 100 defendants make sure each defendant will have atleast 100 claims 
+- create the claims against around 100 defendants make sure each defendant will have atleast 100 claims (10-220)
 - 
-- 30%: 10 drafts - User is created. 10 x drafts are created to the SYA_120_DecidedIndependent transaction
-- 30%: 15 drafts - User is created. 15 x drafts are created to the SYA_120_DecidedIndependent transaction
 
-This means that when the test starts, some users will Login, see no drafts and do the E2E journey, where as other 
-will see a number of drafts (3 - 15), edit one and continue the rest of the journey
 
 ==================================================================
 
-MYA DATA GENERATION
+CMC Setup
+- Setup will be running with two scenarios one is defendant response second one is linking the claim to defendent
 
-- Requires TYA numbers therefore, need to have cases that are submitted already
-- Note - for MYA to work, an email (@mailnator domain) must be registered. This script does that
