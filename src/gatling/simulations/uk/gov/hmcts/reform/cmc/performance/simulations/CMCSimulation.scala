@@ -36,7 +36,7 @@ class CMCSimulation extends Simulation {
   val CMCClaimsTS = scenario("CMC Claims Testing Support")
     .feed(claimcreatedefuserFeeder).feed(loginFeeder)
     //.repeat("${repeatcount}"){
-    .repeat(1){
+    .repeat(10){
       exec(CMC_Claimant_TestingSupport.home)
         .exec(CMC_Claimant_TestingSupport.login)
         .exec(CMC_Claimant_TestingSupport.testingSupport)
@@ -53,7 +53,7 @@ class CMCSimulation extends Simulation {
   
   val CMCClaims = scenario("CMC Claims")
     .feed(defendantloginFeeder).feed (loginFeeder)
-    .repeat(2) {
+    .repeat(1) {
       exec (CMC_Claimant.home)
         .exec (CMC_Claimant.login)
         .exec (CMC_Claimant.eligibility)
@@ -65,12 +65,12 @@ class CMCSimulation extends Simulation {
         .exec (CMC_Claimant.reason)
         .exec (CMC_Claimant.checkAndSend)
         .exec (EmailNotification.getPin)
-        .exec(CMCDefendant.landingPage)
-         .exec(CMCDefendant.startPage)
-         .exec(CMCDefendant.claimNumber)
+        //.exec(CMCDefendant.landingPage)
+        // .exec(CMCDefendant.startPage)
+        // .exec(CMCDefendant.claimNumber)
          //.exec(CMC_Defendant.enterpinGet)
-         .exec(CMCDefendant.enterpinPost)
-         .exec(CMCDefendant.ClaimSummary)
+       //  .exec(CMCDefendant.enterpinPost)
+       //  .exec(CMCDefendant.ClaimSummary)
         .exec (CMC_Claimant.cmcLogout)
     }
   
@@ -116,17 +116,21 @@ class CMCSimulation extends Simulation {
     //.exec(CMCDefendant.checkAndSend)
     .exec(CMCDefendant.dashboard)
     .exec(CMCDefendant.cmcdefLogout)
-  
+
+  // this scenario  is to determine number of claims connected to a defendant
   val CMC_Defendant_Session=scenario("CMC Defendants Claim Numbers")
     .feed(claimNumbersFeeder)
     .exec(ClaimNumber.getIdamAuthCode)
     .exec(ClaimNumber.getClaimNumber)
-    
-  setUp(
+
+
+
+  // Performance Test Execution
+ /* setUp(
     CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (1200)),
       CMC_Link_Defendant.inject(nothingFor(50),rampUsers(300) during (1200))
   ).protocols(httpProtocol)
-  
+*/
  /* setUp(
     CMC_Defendant_Response.inject(nothingFor(1),rampUsers(1) during (1)),
     CMC_Link_Defendant.inject(nothingFor(50),rampUsers(1) during (1))
@@ -139,6 +143,74 @@ class CMCSimulation extends Simulation {
   ).protocols(httpProtocol)*/
   
   /*setUp(
-    CMCClaimsTS.inject(nothingFor(1),rampUsers(340) during (2700))
+    CMCClaimsTS.inject(nothingFor(1),rampUsers(1) during (1))
   ).protocols(httpProtocol)*/
+
+
+
+//User Creation for 300 users
+  /*setUp(
+    UserCreationScenario.inject(nothingFor(1),rampUsers(300) during (50))
+).protocols(httpProtocol)
+*/
+
+  //User Creation for 50 Defendant users
+  /*setUp(
+    UserCreationScenario.inject(nothingFor(1),rampUsers(50) during (50))
+).protocols(httpProtocol)
+*/
+
+
+
+
+
+ /* setUp(
+    CMC_Defendant_Response.inject(nothingFor(1),rampUsers(1) during (1)),
+    CMC_Link_Defendant.inject(nothingFor(50),rampUsers(1) during (1))
+  ).protocols(httpProtocol)*/
+
+
+  //----------------------------DATA PREP----------------------------------------------------------------------------------------
+  //DATA PREP
+
+  // Test and Debug CMC Claims which is used for performance testing and Data Prep for the Defendant performance test
+
+/*
+  setUp(
+    CMCClaims.inject(nothingFor(1),rampUsers(500) during (3600))
+  ).protocols(httpProtocol)
+*/
+/*
+  setUp(
+  CMCClaimsTS.inject(nothingFor(1),rampUsers(300) during (7200))
+).protocols(httpProtocol)
+*/
+
+  //CMC_Link_Defendant - links the defendant to the claim
+/*
+  setUp(
+   CMC_Link_Defendant.inject(nothingFor(1),rampUsers(1398) during (2400))
+ ).protocols(httpProtocol)
+*/
+  //This is identified the number of sessions against each defendant
+      /*
+  setUp(
+        CMC_Defendant_Session.inject(nothingFor(1),rampUsers(50) during (100))
+      ).protocols(httpProtocol)
+*/
+
+ // --------------------------Performance Test Execution---------------------------------------------------------------
+
+  // Performance Test Execution
+   setUp(
+     CMC_Defendant_Response.inject(nothingFor(1),rampUsers(50) during (1200)),
+       CMC_Link_Defendant.inject(nothingFor(50),rampUsers(300) during (1200))
+   ).protocols(httpProtocol)
+
+
+  /*
+  setUp(
+     CMC_Defendant_Response.inject(nothingFor(1),rampUsers(1) during (1)),
+     CMC_Link_Defendant.inject(nothingFor(50),rampUsers(1) during (1))
+   ).protocols(httpProtocol)*/
 }

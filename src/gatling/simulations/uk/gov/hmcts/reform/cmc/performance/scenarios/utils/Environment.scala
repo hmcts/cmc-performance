@@ -14,11 +14,11 @@ object Environment {
   val idamCookieName="SESSION_ID"
   val HttpProtocol = http
   
-  val minThinkTime = 80//100//140
-  val maxThinkTime = 80//100//150
+  val minThinkTime = 80//100//140//5
+  val maxThinkTime = 80//100//150//10
   
-  val linkminThinkTime = 140
-  val linkmaxThinkTime = 150
+  val linkminThinkTime = 140//10
+  val linkmaxThinkTime = 150//40
   
   val commonHeader = Map(
     "Accept" -> "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
@@ -34,15 +34,26 @@ object Environment {
     "Upgrade-Insecure-Requests" -> "1")
   
   val headers_996 = Map(
-    "Accept" -> "*/*",
-    "Accept-Encoding" -> "gzip, deflate, br",
-    "Accept-Language" -> "en-US,en;q=0.9",
-    "Content-type" -> "application/json",
-    "Origin" -> "https://www.payments.service.gov.uk",
-    "Sec-Fetch-Mode" -> "cors",
-    "Sec-Fetch-Site" -> "same-origin",
-    "User-Agent" -> "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36")
-  
+    /*"Accept" -> "*///*",
+   // "Accept-Encoding" -> "gzip, deflate, br",
+    //"Accept-Language" -> "en-US,en;q=0.9",
+  //  "Content-type" -> "application/json",
+  //  "Origin" -> "https://www.payments.service.gov.uk",
+   // "Sec-Fetch-Mode" -> "cors",
+   // "Sec-Fetch-Site" -> "same-origin",
+   // "User-Agent" -> "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.108 Safari/537.36")
+
+  "accept" -> "*/*",
+  "accept-encoding" -> "gzip, deflate, br",
+  "accept-language" -> "en-GB,en-US;q=0.9,en;q=0.8",
+  "origin" -> "https://www.payments.service.gov.uk",
+  "sec-ch-ua" -> """ Not;A Brand";v="99", "Google Chrome";v="91", "Chromium";v="91""",
+  "sec-ch-ua-mobile" -> "?0",
+  "sec-fetch-dest" -> "empty",
+  "sec-fetch-mode" -> "cors",
+  "sec-fetch-site" -> "same-origin")
+
+
   val headers_withpin = Map(
     "Accept" -> "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
     "Origin" -> idamURL,
