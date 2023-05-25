@@ -1,7 +1,7 @@
 #!groovy
 /*
 properties([
-        pipelineTriggers([cron('07 07 * * 1-5')])
+        pipelineTriggers([cron('8 07 * * 1-5')])
 ])
 */
 @Library("Infrastructure") _
