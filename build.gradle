@@ -1,7 +1,7 @@
 plugins {
     id 'org.owasp.dependencycheck' version '5.1.0'
     id 'scala'
-    id 'com.github.lkishalmi.gatling' version '3.0.2'
+    id 'com.github.lkishalmi.gatling' version '3.3.4'
     id 'java-gradle-plugin'
     id 'groovy'
     id 'com.gradle.plugin-publish' version '0.9.8'
