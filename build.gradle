@@ -52,7 +52,7 @@ dependencies {
     gatling "io.gatling.highcharts:gatling-charts-highcharts:${gatlingVersion}"
     //gatlingImplementation "groupio.rest-assured:rest-assured:4.3.1"
     gatling "com.warrenstrange:googleauth:1.5.0"
-    gatlingCompile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.14.1-RELEASE'
+    gatlingCompile group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.0.0-RELEASE'
 }
 
 gatling {
